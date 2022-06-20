@@ -13,10 +13,9 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
     testImplementation(kotlin("test"))
     testImplementation("org.assertj:assertj-core:3.23.1")
 }
