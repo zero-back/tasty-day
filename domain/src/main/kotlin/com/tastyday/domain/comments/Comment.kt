@@ -6,27 +6,27 @@ class Comment private constructor(
         val id: String,
         val postId: String,
         val userId: Long?,
-        targetUserId: Long?,
+        targetUserIds: List<Long>?,
         content: Content
 ) {
     companion object {
-        fun create(userId: Long, postId: String, targetUserId: Long?, content: String) = Comment(
+        fun create(userId: Long, postId: String, targetUserIds: List<Long>?, content: String) = Comment(
                 id = IdGenerator.createId(),
                 postId = postId,
                 userId = userId,
-                targetUserId = targetUserId,
+                targetUserIds = targetUserIds,
                 content = Content(content)
         )
     }
 
-    var targetUserId: Long? = targetUserId
+    var targetUserIds: List<Long>? = targetUserIds
         private set
 
     var content: Content = content
         private set
 
-    fun changeTargetUserId(targetUserId: Long) {
-        this.targetUserId = targetUserId
+    fun changeTargetUserId(targetUserIds: List<Long>?) {
+        this.targetUserIds = targetUserIds
     }
 
     fun changeContent(content: String) {
