@@ -12,60 +12,60 @@ class CommentTest {
         val expectedTargetUserIds = listOf(1L, 2L)
         val content = "게시글 진짜 웃기네요 ㅋㅋㅋ"
         val newComment = aComment(
-                targetUserIds = expectedTargetUserIds,
+                mentionUserIds = expectedTargetUserIds,
                 content = content
         )
 
         assertThat(newComment.id).isNotEmpty
         assertThat(newComment.postId).isEqualTo(expectedPostId)
-        assertThat(newComment.targetUserIds).isEqualTo(expectedTargetUserIds)
+        assertThat(newComment.mentionUserIds).isEqualTo(expectedTargetUserIds)
         assertThat(newComment.userId).isEqualTo(1L)
         assertThat(newComment.content.toString()).isEqualTo(content)
     }
 
     @Test
-    internal fun `댓글 생성 테스트 - 타겟 유저 없음`() {
+    internal fun `댓글 생성 테스트 - 멘션 유저 없음`() {
         val expectedPostId = "PostId"
         val content = "게시글 진짜 웃기네요 ㅋㅋㅋ"
         val newComment = aComment(
-                targetUserIds = emptyList(),
+                mentionUserIds = emptyList(),
                 content = content
         )
 
         assertThat(newComment.id).isNotEmpty
         assertThat(newComment.postId).isEqualTo(expectedPostId)
-        assertThat(newComment.targetUserIds).isEmpty()
+        assertThat(newComment.mentionUserIds).isEmpty()
         assertThat(newComment.userId).isEqualTo(1L)
         assertThat(newComment.content.toString()).isEqualTo(content)
     }
 
     @Test
-    internal fun `타켓 유저 수정`() {
+    internal fun `멘션 유저 수정`() {
         val newComment = aComment(
-                targetUserIds = listOf(1L, 2L),
+                mentionUserIds = listOf(1L, 2L),
                 content = "게시글 진짜 웃기네요 ㅋㅋㅋ"
         )
-        val expectedTargetUserIds = listOf(3L, 4L)
-        newComment.changeTargetUserId(expectedTargetUserIds)
-        assertThat(newComment.targetUserIds).isEqualTo(expectedTargetUserIds)
+        val expectedMentionUserIds = listOf(3L, 4L)
+        newComment.changeMentionUserId(expectedMentionUserIds)
+        assertThat(newComment.mentionUserIds).isEqualTo(expectedMentionUserIds)
     }
 
     @Test
-    internal fun `타켓 유저는 없다`() {
+    internal fun `멘션 유저는 없다`() {
         val newComment = aComment(
-                targetUserIds = emptyList(),
+                mentionUserIds = emptyList(),
                 content = "게시글 진짜 웃기네요 ㅋㅋㅋ"
         )
 
-        val expectedTargetUserId = emptyList<Long>()
-        newComment.changeTargetUserId(expectedTargetUserId)
-        assertThat(newComment.targetUserIds).isEqualTo(expectedTargetUserId)
+        val expectedMentionUserIds = emptyList<Long>()
+        newComment.changeMentionUserId(expectedMentionUserIds)
+        assertThat(newComment.mentionUserIds).isEqualTo(expectedMentionUserIds)
     }
 
     @Test
     internal fun `댓글 내용 수정`() {
         val newComment = aComment(
-                targetUserIds = listOf(1L, 2L),
+                mentionUserIds = listOf(1L, 2L),
                 content = "게시글 진짜 웃기네요 ㅋㅋㅋ"
         )
         val updateContent = "댓글 수정해야지!!"
@@ -77,10 +77,10 @@ class CommentTest {
 
 class FixtureComment {
     companion object {
-        fun aComment(targetUserIds: List<Long>, content: String) = Comment.create(
+        fun aComment(mentionUserIds: List<Long>, content: String) = Comment.create(
                 userId = 1L,
                 postId = "PostId",
-                targetUserIds = targetUserIds,
+                mentionUserIds = mentionUserIds,
                 content = content
         )
     }

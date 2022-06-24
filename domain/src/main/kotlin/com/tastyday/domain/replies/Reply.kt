@@ -1,21 +1,25 @@
-package com.tastyday.domain.comments
+package com.tastyday.domain.replies
 
 import com.tastyday.common.utils.IdGenerator
 
-class Comment private constructor(
+class Reply private constructor(
         val id: String,
-        val postId: String,
-        val userId: Long?,
+        val commentId: Long,
+        val parentReplyId: Long?,
+        val userId: Long,
         mentionUserIds: List<Long>?,
         content: Content
 ) {
+
     companion object {
-        fun create(userId: Long, postId: String, mentionUserIds: List<Long>?, content: String) = Comment(
+        fun create(commentId: Long, parentReplyId: Long?, userId: Long, mentionUserIds: List<Long>?, content: String) = Reply(
                 id = IdGenerator.createId(),
-                postId = postId,
+                commentId = commentId,
+                parentReplyId = parentReplyId,
                 userId = userId,
                 mentionUserIds = mentionUserIds,
                 content = Content(content)
+
         )
     }
 
