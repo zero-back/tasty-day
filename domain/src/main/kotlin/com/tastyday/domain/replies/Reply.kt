@@ -3,34 +3,56 @@ package com.tastyday.domain.replies
 import com.tastyday.common.utils.IdGenerator
 
 class Reply private constructor(
-        val id: String,
-        val commentId: Long,
-        val parentReplyId: Long?,
-        val userId: Long,
-        mentionUserIds: List<Long>?,
-        content: Content
+    val id: String,
+    val commentId: Long,
+    parent: Reply?,
+    val userId: Long,
+    mentionUserIds: MentionUserIds?,
+    content: Content,
+    children: Children?,
 ) {
 
     companion object {
-        fun create(commentId: Long, parentReplyId: Long?, userId: Long, mentionUserIds: List<Long>?, content: String) = Reply(
-                id = IdGenerator.createId(),
-                commentId = commentId,
-                parentReplyId = parentReplyId,
-                userId = userId,
-                mentionUserIds = mentionUserIds,
-                content = Content(content)
-
+        fun create(
+            commentId: Long,
+            parent: Reply?,
+            userId: Long,
+            mentionUserIds: MentionUserIds?,
+            content: String,
+            children: MutableList<Reply>?,
+        ) = Reply(
+            id = IdGenerator.createId(),
+            commentId = commentId,
+            parent = parent,
+            userId = userId,
+            mentionUserIds = mentionUserIds,
+            content = Content(content),
+            children = Children(children)
         )
     }
 
-    var mentionUserIds: List<Long>? = mentionUserIds
+    fun assignParent(parent: Reply) {
+        if (this.parent != null) {
+            this.parent?.children?.remove(this)
+        }
+        this.parent = parent
+        this.parent?.children?.add(this)
+    }
+
+    var parent: Reply? = parent
+        private set
+
+    var mentionUserIds: MentionUserIds? = mentionUserIds
         private set
 
     var content: Content = content
         private set
 
+    var children: Children? = children
+        private set
+
     fun changeMentionUserId(mentionUserIds: List<Long>?) {
-        this.mentionUserIds = mentionUserIds
+        this.mentionUserIds = MentionUserIds(mentionUserIds)
     }
 
     fun changeContent(content: String) {
